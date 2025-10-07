@@ -1,14 +1,14 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import { Config } from "../config";
-import * as schema from "../../database/schema";
+import * as schema from "../schema";
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
 
 export class Database {
   constructor(private cfg: Config) {}
-  private static instance: NodePgDatabase | null = null;
+  private static instance: PgDatabase | null = null;
 
-  public getInstance(): NodePgDatabase {
+  public getInstance(): PgDatabase {
     if (!Database.instance) {
       const pool = new Pool({
         connectionString:
