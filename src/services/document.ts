@@ -42,7 +42,10 @@ export class DocumentService implements IDocumentService {
         .map((doc) => doc.pageContent.trim())
         .filter(Boolean);
 
-      const embeddings = await new OpenAIEmbeddings().embedDocuments(texts);
+      const embeddings = await new OpenAIEmbeddings({
+        openAIApiKey: this.cfg.OpenAI.API_KEY,
+        model: "text-embedding-3-small",
+      }).embedDocuments(texts);
 
       const records = texts.map((text, i) => ({
         chunkIndex: i,
