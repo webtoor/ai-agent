@@ -4,8 +4,13 @@
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
+    "@types/pg": "^8.15.5",
+    "drizzle": "^1.4.0",
+    "drizzle-kit": "^0.31.5",
+    "drizzle-orm": "^0.44.6",
     "hono": "^4.9.10",
     "http-status-codes": "^2.3.0",
+    "pg": "^8.16.3",
     "zod": "^4.1.12"
   },
   "devDependencies": {
