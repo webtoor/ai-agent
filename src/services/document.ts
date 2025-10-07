@@ -19,6 +19,7 @@ export class DocumentService implements IDocumentService {
   ): Promise<AppCtxResponse> {
     let fields = new logger.Fields(logger.EventName("DocumentService.upload"));
     try {
+      await this.db.delete(schema.documents);
       const buffer = Buffer.from(await params.file.arrayBuffer());
 
       const parser = new LlamaParseReader({

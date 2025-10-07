@@ -1,6 +1,8 @@
 import { getEnvVar, getEnvVarNumber } from "../utils/common";
 import { Database, IDatabase } from "./database";
+import { ILangChain, LangChain } from "./langchain";
 import { ILlamaIndex, LlamaIndex } from "./llamaindex";
+import { IOpenAI, OpenAI } from "./openai";
 
 export interface Config {
   AppName: string;
@@ -9,6 +11,8 @@ export interface Config {
   AppPort: number;
   AppLogLevel: string;
   Database: IDatabase;
+  LangChain: ILangChain;
+  OpenAI: IOpenAI;
   LlamaIndex: ILlamaIndex;
 }
 
@@ -20,6 +24,8 @@ export function ReadConfig(): Config {
     AppPort: getEnvVarNumber("APP_PORT", 3000),
     AppLogLevel: getEnvVar("APP_LOG_LEVEL", "info"),
     Database: Database,
+    LangChain: LangChain,
+    OpenAI: OpenAI,
     LlamaIndex: LlamaIndex,
   };
 }

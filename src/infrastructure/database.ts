@@ -17,7 +17,10 @@ export class Database {
           `?sslmode=disable&connect_timeout=${this.cfg.Database.TIMEOUT}`,
       });
 
-      Database.instance = drizzle(pool, { schema, logger: this.cfg.AppDebug });
+      Database.instance = drizzle(pool, {
+        schema,
+        logger: this.cfg.Database.DEBUG,
+      });
     }
 
     return Database.instance;
