@@ -18,6 +18,9 @@ class CustomerServiceStrategy implements AgentStrategy {
       .addToneAndPersonality(payload.tone, payload.personality)
       .addInstructions()
       .addContext(payload.content)
+      .addGoal(
+        "Assist customers by answering questions about products, services, or policies."
+      )
       .build();
     return prompt;
   }

@@ -36,6 +36,15 @@ export class PromptBuilder {
     return this;
   }
 
+  addGoal(goal: string) {
+    this.parts.push(
+      `
+    ### Goal:
+    ${goal}`.trim()
+    );
+    return this;
+  }
+
   build(): string {
     return this.parts.filter(Boolean).join("\n\n").trim();
   }

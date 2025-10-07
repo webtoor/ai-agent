@@ -50,8 +50,8 @@ export class AgentService implements IAgentService {
 
       const payload: AgentPayload = {
         question: params.question,
-        tone: "friendly",
-        personality: "friendly",
+        tone: this.cfg.AIAgent.TONE,
+        personality: this.cfg.AIAgent.PERSONALITY,
         content: context,
       };
 

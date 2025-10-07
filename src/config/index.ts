@@ -1,4 +1,5 @@
 import { getEnvVar, getEnvVarNumber } from "../utils/common";
+import { IAIAgent, AIAgent } from "./ai.agent";
 import { Database, IDatabase } from "./database";
 import { ILangChain, LangChain } from "./langchain";
 import { ILlamaIndex, LlamaIndex } from "./llamaindex";
@@ -14,6 +15,7 @@ export interface Config {
   LangChain: ILangChain;
   OpenAI: IOpenAI;
   LlamaIndex: ILlamaIndex;
+  AIAgent: IAIAgent;
 }
 
 export function ReadConfig(): Config {
@@ -27,5 +29,6 @@ export function ReadConfig(): Config {
     LangChain: LangChain,
     OpenAI: OpenAI,
     LlamaIndex: LlamaIndex,
+    AIAgent: AIAgent,
   };
 }
