@@ -67,3 +67,32 @@ export function getCallerInfo(): {
 
   return {};
 }
+
+export const detectLang = (text: string): "indonesia" | "english" => {
+  const lowerText = text.toLowerCase();
+
+  const englishWords = ["the", "and", "you", "what", "how", "is", "it", "to"];
+  const indonesiaWords = [
+    "dan",
+    "apa",
+    "bagaimana",
+    "yang",
+    "dengan",
+    "saya",
+    "kamu",
+  ];
+
+  const englishCount = englishWords.filter((word) =>
+    new RegExp(`\\b${word}\\b`).test(lowerText)
+  ).length;
+
+  const indonesiaCount = indonesiaWords.filter((word) =>
+    new RegExp(`\\b${word}\\b`).test(lowerText)
+  ).length;
+
+  if (englishCount > indonesiaCount) {
+    return "english";
+  }
+
+  return "indonesia";
+};
