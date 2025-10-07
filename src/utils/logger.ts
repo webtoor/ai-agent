@@ -2,7 +2,7 @@ import pino from "pino";
 import { getCallerInfo } from "./common";
 
 const logger = pino({
-  level: Bun.env.LOG_LEVEL,
+  level: Bun.env.APP_LOG_LEVEL,
   formatters: {
     level: (label) => {
       return { level: label.toUpperCase() };

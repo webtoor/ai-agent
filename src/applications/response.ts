@@ -1,6 +1,8 @@
+import { StatusCodes } from "http-status-codes";
+
 export type AppCtxResponse = {
   status: boolean;
-  code: number;
+  code: StatusCodes;
   message: string;
   data?: object;
   errors?: any;
@@ -16,7 +18,7 @@ export class ResponseBuilder {
     };
   }
 
-  withCode(code: number): this {
+  withCode(code: StatusCodes): this {
     this.response.code = code;
     if (code === 200) {
       this.response.status = true;
