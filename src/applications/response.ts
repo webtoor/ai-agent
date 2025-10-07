@@ -12,7 +12,7 @@ export class ResponseBuilder {
     this.response = {
       status: false,
       code: 500,
-      message: "",
+      message: "Oops! Something went wrong. Please try again.",
     };
   }
 
