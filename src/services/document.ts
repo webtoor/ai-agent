@@ -44,7 +44,7 @@ export class DocumentService implements IDocumentService {
 
       const embeddings = await new OpenAIEmbeddings({
         openAIApiKey: this.cfg.OpenAI.API_KEY,
-        model: "text-embedding-3-small",
+        model: this.cfg.LangChain.EMBEDDING_MODEL,
       }).embedDocuments(texts);
 
       const records = texts.map((text, i) => ({

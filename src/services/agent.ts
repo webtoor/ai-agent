@@ -4,13 +4,14 @@ import { AppCtxResponse, ResponseBuilder } from "../applications/response";
 import * as logger from "../utils/logger";
 import { Config } from "../config";
 import { PgDatabase } from "../infrastructure/database";
-import { LlamaParseReader } from "llama-cloud-services";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { OpenAI, OpenAIEmbeddings } from "@langchain/openai";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import * as schema from "../schema";
 import { StatusCodes } from "http-status-codes";
 import { AgentAskRequest } from "../presentations/agent";
 import { sql } from "drizzle-orm";
+import { AgentPayload, setAgentStrategy } from "../agents/strategies/agent";
+import { AgentType } from "../constants/agent";
 
 export class AgentService implements IAgentService {
   constructor(private cfg: Config, private db: PgDatabase) {}
@@ -20,12 +21,14 @@ export class AgentService implements IAgentService {
       logger.Any("param.question", params.question)
     );
     try {
-      const openai = new OpenAIEmbeddings({
+      const openaiEmbed = new OpenAIEmbeddings({
         openAIApiKey: this.cfg.OpenAI.API_KEY,
-        model: "text-embedding-3-small",
+        model: this.cfg.LangChain.EMBEDDING_MODEL,
       });
 
-      const queryEmbedding: number[] = await openai.embedQuery(params.question);
+      const queryEmbedding: number[] = await openaiEmbed.embedQuery(
+        params.question
+      );
 
       const vector: string = `[${queryEmbedding.join(",")}]`;
 
@@ -37,13 +40,42 @@ export class AgentService implements IAgentService {
           LIMIT 2;
           `
       );
-
       const similarDocs = result.rows;
+
+      const context = similarDocs
+        .map((doc) => doc.chunk_content)
+        .join("\n\n---\n\n");
+
+      const strategy = setAgentStrategy(AgentType.CUSTOMER_SERVICE);
+
+      const payload: AgentPayload = {
+        question: params.question,
+        tone: "friendly",
+        personality: "friendly",
+        content: context,
+      };
+
+      const prompt = await strategy.handle(payload);
+
+      const openaiChat = new ChatOpenAI({
+        apiKey: this.cfg.OpenAI.API_KEY,
+        model: this.cfg.LangChain.MODEL,
+        maxCompletionTokens: this.cfg.OpenAI.MAX_TOKEN_OUTPUT,
+      });
+
+      const response = await openaiChat.invoke([
+        new SystemMessage(prompt),
+        new HumanMessage(params.question),
+      ]);
+
+      logger.Info("answer successfully", fields);
 
       return new ResponseBuilder()
         .withCode(StatusCodes.OK)
         .withMessage("Success")
-        .withData({ similarDocs })
+        .withData({
+          answer: response.content,
+        })
         .build();
     } catch (error) {
       logger.Error(`error: ${error}`, fields);
