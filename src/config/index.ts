@@ -1,5 +1,6 @@
 import { getEnvVar, getEnvVarNumber } from "../utils/common";
 import { Database, IDatabase } from "./database";
+import { ILlamaIndex, LlamaIndex } from "./llamaindex";
 
 export interface Config {
   AppName: string;
@@ -8,6 +9,7 @@ export interface Config {
   AppPort: number;
   AppLogLevel: string;
   Database: IDatabase;
+  LlamaIndex: ILlamaIndex;
 }
 
 export function ReadConfig(): Config {
@@ -18,5 +20,6 @@ export function ReadConfig(): Config {
     AppPort: getEnvVarNumber("APP_PORT", 3000),
     AppLogLevel: getEnvVar("APP_LOG_LEVEL", "info"),
     Database: Database,
+    LlamaIndex: LlamaIndex,
   };
 }
