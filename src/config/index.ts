@@ -6,6 +6,7 @@ export interface Config {
   AppEnvironment: string;
   AppDebug: boolean;
   AppPort: number;
+  AppLogLevel: string;
   Database: IDatabase;
 }
 
@@ -15,6 +16,7 @@ export function ReadConfig(): Config {
     AppEnvironment: getEnvVar("APP_ENVIRONMENT", "development"),
     AppDebug: Bun.env.APP_DEBUG?.toLocaleLowerCase() === "true",
     AppPort: getEnvVarNumber("APP_PORT", 3000),
+    AppLogLevel: getEnvVar("APP_LOG_LEVEL", "info"),
     Database: Database,
   };
 }

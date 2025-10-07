@@ -6,7 +6,7 @@ const connectionString =
   `?sslmode=disable&connect_timeout=${process.env.DB_TIMEOUT}`;
 
 export default defineConfig({
-  schema: "./database/schema",
+  schema: "./src/schema",
   out: "./database/migrations",
   dialect: "postgresql",
   dbCredentials: {

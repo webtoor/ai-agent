@@ -1,4 +1,4 @@
-import { getEnvVar, getEnvVarNumber } from "../utils/common";
+import { getEnvVar, getEnvVarBool, getEnvVarNumber } from "../utils/common";
 
 export interface IDatabase {
   HOST: string;
@@ -7,6 +7,7 @@ export interface IDatabase {
   PASSWORD: string;
   NAME: string;
   TIMEOUT: number;
+  DEBUG: boolean;
 }
 
 export const Database = {
@@ -16,4 +17,5 @@ export const Database = {
   PASSWORD: getEnvVar("DB_PASSWORD", "default_password"),
   NAME: getEnvVar("DB_NAME", "default_db_name"),
   TIMEOUT: getEnvVarNumber("DB_TIMEOUT", 30),
+  DEBUG: getEnvVarBool("DB_DEBUG", false),
 };
