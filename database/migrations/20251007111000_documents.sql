@@ -1,4 +1,6 @@
-CREATE TABLE "documents" (
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE IF NOT EXISTS "documents" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"chunk_index" integer NOT NULL,
 	"chunk_content" text NOT NULL,
